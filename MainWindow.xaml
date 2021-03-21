@@ -1,0 +1,39 @@
+﻿<Window x:Class="XOServer.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:XOServer"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <Grid.Background>
+            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                <GradientStop Color="#FF5A6969" Offset="0"/>
+                <GradientStop Color="#FF25B4AC" Offset="1"/>
+            </LinearGradientBrush>
+        </Grid.Background>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="397*"></ColumnDefinition>
+            <ColumnDefinition Width="247*"></ColumnDefinition>
+            <ColumnDefinition Width="150*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <TextBox Text="192.168.1.172" x:Name="textBox_IP" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Left" Height="42" Margin="51,37,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="303" FontFamily="Times New Roman" FontSize="20" Padding="10,7,0,0" Cursor="Hand"/>
+        <TextBox x:Name="textBox_Port" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Left" Height="42" Margin="58.2,37,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="265" Grid.ColumnSpan="2" FontFamily="Times New Roman" FontSize="20" Padding="10,7,0,0" Cursor="Hand" Text="45000"/>
+        <Button x:Name="button_ServerStart" Content="Start Server" Grid.Column="1" Grid.Row="1"  HorizontalAlignment="Left" Margin="0.2,12,0,0" VerticalAlignment="Top" Width="157" Height="64" FontFamily="Times New Roman" FontSize="20" Background="#FF3AC017" Cursor="Hand" Click="button_ServerStart_Click"/>
+        <ListBox x:Name="listBox_Messages" HorizontalAlignment="Left" Height="232" Margin="10,10,0,0" Grid.Row="2" Grid.RowSpan="3" VerticalAlignment="Top" Width="377" FontFamily="Times New Roman" FontSize="20" Padding="10,0,0,0"/>
+        <Label x:Name="label_User1Status" Content="User1 disabled" HorizontalAlignment="Left" Margin="51,12,0,0" Grid.Row="1" VerticalAlignment="Top" RenderTransformOrigin="-0.24,0.578" Width="303"/>
+        <Label Content="IP" HorizontalAlignment="Left" Margin="58,5,0,0" VerticalAlignment="Top" Width="117" Height="27" FontSize="16"/>
+        <Label Content="Port" Grid.Column="1" HorizontalAlignment="Left" Margin="79.2,7,0,0" VerticalAlignment="Top" Width="137" FontSize="16"/>
+        <Button x:Name="button_ServerStop" Content="Start Stop" Grid.Column="1" Grid.Row="1"  HorizontalAlignment="Left" Margin="190.2,10,0,0" VerticalAlignment="Top" Width="157" Height="64" FontFamily="Times New Roman" FontSize="20" Background="#FFC02317" Cursor="Hand" Grid.ColumnSpan="2" Click="button_ServerStop_Click"/>
+        <Label x:Name="label_User2Status" Content="User2 disabled" HorizontalAlignment="Left" Margin="51,43,0,0" Grid.Row="1" VerticalAlignment="Top" RenderTransformOrigin="-0.24,0.578" Width="303"/>
+        <Label x:Name="label_Status" Content="Label" Grid.Column="1" HorizontalAlignment="Left" Margin="52.2,49,0,0" Grid.Row="2" VerticalAlignment="Top"/>
+    </Grid>
+</Window>
