@@ -85,6 +85,7 @@ namespace XOServer
         {
             label_Status.Content = "Server stoped";
             _serverStart = false;
+            
             _list.Stop();
             _list = null;
         }
@@ -97,25 +98,60 @@ namespace XOServer
                 {
                     TcpClient tcpClient = _list.AcceptTcpClient();
                     EndPoint rep =  tcpClient.Client.RemoteEndPoint;
-                    StreamReader sr = new StreamReader(tcpClient.GetStream(), Encoding.Unicode);
+                    //StreamReader sr = new StreamReader(tcpClient.GetStream(), Encoding.Unicode);
                     /*сообщение от пользователя*/
-                    string userMessage = sr.ReadLine();
-                    MessageSwitch(userMessage, ParseEPoint(rep));
+                    //string userMessage = sr.ReadLine();
+                    NetworkStream stream = tcpClient.GetStream();
+                    Byte[] bytes = new Byte[256];
+                    String data = null;
+                    //byte[] byteArr = Encoding.Unicode.GetBytes("SERVER");
+                    //networkStream.Write(byteArr, 0, byteArr.Length);
+                    
+                    int i;
+
+                    // Принимаем данные от клиента в цикле пока не дойдём до конца.
+                    while ((i = stream.Read(bytes, 0, bytes.Length)) != 0)
+                    {
+                        // Преобразуем данные в ASCII string.
+                        data = System.Text.Encoding.ASCII.GetString(bytes, 0, i);
+
+                        // Преобразуем строку к верхнему регистру.
+                        //data = data.ToUpper();
+                        string answer = MessageSwitch(data, ParseEPoint(rep));
+                        // Преобразуем полученную строку в массив Байт.
+                        byte[] msg = System.Text.Encoding.ASCII.GetBytes(answer);
+
+                        // Отправляем данные обратно клиенту (ответ).
+                        stream.Write(msg, 0, msg.Length);
+
+                    }
+
+
+
+
+
+
+
+
+
+
+                    //MessageSwitch(userMessage, ParseEPoint(rep), tcpClient);
 
 
 
                     /*добавляем клиентское сообщение в наш листбокс*/
-                    if (userMessage == "shutdown")
-                    {
-                        //this.Dispatcher.Invoke(() =>
-                        //{
-                        //    wind.Close();
-                        //}); // робота с элементом основного потока
-                    }
-                    this.Dispatcher.Invoke(() =>
-                    {
-                        listBox_Messages.Items.Add(userMessage);
-                    }); // робота с элементом основного потока
+                    //if (userMessage == "shutdown")
+                    //{
+                    //    //this.Dispatcher.Invoke(() =>
+                    //    //{
+                    //    //    wind.Close();
+                    //    //}); // робота с элементом основного потока
+                    //}
+                    //this.Dispatcher.Invoke(() =>
+                    //{
+                    //    listBox_Messages.Items.Add(userMessage);
+                    //}); // робота с элементом основного потока
+
                     tcpClient.Close(); // Закрываем подключение к клиенту
                 }
             }
@@ -148,8 +184,9 @@ namespace XOServer
             return null;
         }
 
-        private void MessageSwitch(string mes, string ip)
+        private string MessageSwitch(string mes, string ip)
         {
+            string res = null;
             string flag = ParseMessage(mes);
             string mes_text = ParseMessage(mes, "getText");
             switch (flag)
@@ -158,11 +195,18 @@ namespace XOServer
                     if (_user1 != null && _user2 != null)
                     {
                         MessageBox.Show("Sorry all users in game");
+                        res = "error";
                         break;
                     }
                     if (_user1 != null && _user2 == null && mes_text != _user1.Name)
                     {
                         _user2 = new User(ip, mes_text);
+                        this.Dispatcher.Invoke(() =>
+                        {
+                            label_User2Status.Content = $"{mes_text}@{ip} in game";
+                            res = "O";
+                        }); // робота с элементом основного потока
+
                     }
                     if (_user1 == null)
                     {
@@ -170,11 +214,13 @@ namespace XOServer
                         this.Dispatcher.Invoke(() =>
                         {
                             label_User1Status.Content = $"{mes_text}@{ip} in game";
+                            res = "X";
                         }); // робота с элементом основного потока
 
                     }
                     break;
             }
+            return res;
         }
     }
 }
